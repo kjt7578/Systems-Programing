@@ -58,17 +58,20 @@ char *next_line(lines_t *L)
 
     while (1) {
 	if (L->pos == L->len) {
+    
 	    if (line_start == 0 && L->len == L->size) {
 		L->size *= 2;
 		L->buf = realloc(L->buf, L->size);
 		if (DEBUG) printf("[%d]: expand buffer to %d\n", L->fd, L->size);
-
-	    } else if (line_start < L->pos) {
+	    } 
+        
+      else if (line_start < L->pos) {
 		int segment_length = L->pos - line_start;
 		memmove(L->buf, L->buf + line_start, segment_length);
 		L->pos = segment_length;
-		
-	    } else {
+	    } 
+        
+      else {
 		L->pos = 0;
 	    }
 

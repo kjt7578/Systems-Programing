@@ -1,0 +1,12 @@
+
+test: arraylist.o test.o
+  gcc arraylist.o test.o -c test
+
+test.o: test.c
+  gcc -c test.c
+
+arraylist.o: arraylist.c
+  gcc -c arraylist.c
+
+clean
+  rm *.o test

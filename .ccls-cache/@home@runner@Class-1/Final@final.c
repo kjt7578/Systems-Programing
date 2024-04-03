@@ -7,10 +7,12 @@
 
 void fork_Who();
 void fork_Wait();
+void fork_Wait2();
 
 int main() {
   //fork_Who();
-  fork_Wait();
+  //fork_Wait();
+  fork_Wait2();
   return 0;
 }
 
@@ -42,12 +44,10 @@ void fork_Wait(){
   if(childPid > 0){ //parent process
     pid_t waitPid;
     printf("부모 PID : %ld, pid : %d %d \n",(long)getpid(), childPid, errno);
-    printf("wait");
             for(i=0;i<5;i++) {
-                sleep(1);
+                //sleep(1);
               printf(".");
             }
-    printf("\n");
 
             waitPid = wait(&status);
 
@@ -77,3 +77,48 @@ void fork_Wait(){
             exit(-1);
         }
     }
+
+void fork_Wait2(){
+      pid_t childPid;
+      int status,i;
+
+      childPid = fork();
+
+      if(childPid > 0) {  // 부모 프로세스
+          pid_t waitPid;
+          printf("부모 PID : %ld, pid : %d %d \n",(long)getpid(), childPid, errno);
+
+          waitPid = wait(&status);
+
+          if(waitPid == -1) {
+              printf("에러 넘버 : %d \n",errno);
+              perror("wait 함수 오류 반환");
+          }
+          else {
+              if(WIFEXITED(status)) {
+                  printf("wait : 자식 프로세스 정상 종료 %d\n",WEXITSTATUS(status));
+              }
+              else if(WIFSIGNALED(status)) {
+                  printf("wait : 자식 프로세스 비정상 종료 %d\n",WTERMSIG(status));
+              }
+          }
+
+          printf("부모 종료 %d %d\n",waitPid,WTERMSIG(status));
+      }
+      else if(childPid == 0){  // 자식 코드
+          printf("자식 PID : %ld \n",(long)getpid());
+
+          for(i=0;i<5;i++) {
+              sleep(1);
+          }
+
+          printf("자식 종료\n");
+          exit(0);
+      }
+      else {  // fork 실패
+          perror("fork Fail! \n");
+          exit(-1);
+      }
+
+  }
+

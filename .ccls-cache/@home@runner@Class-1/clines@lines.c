@@ -48,7 +48,7 @@ void read_lines(int fd, void (*use_line)(void *, char *), void *arg)
 	while (pos < bufend) {//버퍼가 다 차지 않았는데 줄 바꿈을 하였을 경우
 	    if (DEBUG) printf("start %d, pos %d, char '%c'\n", line_start, pos, buf[pos]);
 
-	    if (buf[pos] == '\n') {//여기서 buf[pos] == '\n'은 라인의 끝을 나타냅니다.
+        if(buf[pos] == '\n' || buf[pos] == ' ' ){//여기서 buf[pos] == '\n'은 라인의 끝을 나타냅니다.
 		// we found a line, starting at line_start ending before pos
 		buf[pos] = '\0';       // 줄바꿈 \n 을 \0 (null) 로 바꿔줌
 		use_line(arg, buf + line_start);  //print_line 호출
